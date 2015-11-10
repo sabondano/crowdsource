@@ -1,13 +1,13 @@
 {
-  "name": "right-now",
+  "name": "crowdsource",
   "version": "1.0.0",
-  "description": "Real-time application is real-time.",
+  "description": "Real time pol application.",
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Turing School",
+  "author": "Sebastian Abondano",
   "license": "MIT",
   "dependencies": {
     "express": "^4.12.3",
