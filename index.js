@@ -13,6 +13,7 @@ app.get('/', function (req, res){
 
 io.on('connection', function (socket) {
   console.log('Someone has connected.');
+  socket.broadcast.emit("new connection", 'A new user has connected.');
 
   socket.on('message', function (channel, message) {
     console.log(channel + ':', message);
