@@ -1,24 +1,25 @@
-var socket = io();
+(function(){
+  'use strict';
 
-socket.on('connect', function () {
-  console.log('You have connected!');
-});
+  // Initialize the WebSocket connection.
+  var socket = io();
 
-$('.send-message').click(function () {
-  socket.send('message', {
-    username: $('.username input[type=text]').val(),
-    text: $('.message input[type=text]').val()
+  // Grab some DOM element that we're going to be using.
+  var createPollButton = $('#btn-create-poll');
+  var pollForm = $('#poll-form');
+  var answers = $('#answers');
+  var addAnswerButton = $('#btn-add-answer');
+
+  // Show form to create poll when #btn-create-poll is clicked.
+  createPollButton.on('click', function (event) {
+    event.preventDefault();
+    createPollButton.hide();
+    pollForm.show(); 
   });
-});
 
-var $messages = $('.messages');
-
-socket.on('new connection', function (message) {
-  console.log('Something came along on the "new connection" channel:', message);
-  $messages.append(`<p>${message}</p>`);
-});
-
-socket.on('message', function (message) {
-  console.log('Something came along on the "message" channel:', message);
-  $messages.append(`<p><strong>${message.username}:</strong> ${message.text}</p>`);
-});
+  // Add answer field to form when #btn-add-answer is clicked.
+  addAnswerButton.on('click', function (event) {
+    event.preventDefault();
+    answers.append(`<input type="text" name="answer"><br>`);
+  });
+}());

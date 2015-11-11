@@ -7,27 +7,21 @@ const redis = require('redis');
 const path = require('path');
 const client = redis.createClient();
 
+const bodyParser = require('body-parser');
+
+const pry = require('pryjs');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-var messageCount = 0;
 
 app.get('/', function (req, res){
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-io.on('connection', function (socket) {
-  console.log('Someone has connected.');
-  socket.broadcast.emit("new connection", 'A new user has connected.');
-
-  socket.on('message', function (channel, message) {
-    console.log(channel + ':', message);
-    io.sockets.emit(channel, message);
-    var messageString = JSON.stringify({text: message.text});
-    client.set('message ' + messageCount++, messageString);
-  });
-
-  socket.on('disconnect', function () {
-
-  });
+app.post('/poll', function (req, res) {
+  console.log('Poll received with ' + JSON.stringify(req.body));
+  res.send('You submited ' + req.body.question + '.');
 });
 
 http.listen(process.env.PORT || 3000, function(){
