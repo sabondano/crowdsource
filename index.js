@@ -3,11 +3,12 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const redis = require('redis');
-
 const path = require('path');
 const client = redis.createClient();
 
 const bodyParser = require('body-parser');
+
+const Poll = require('./lib/poll');
 
 const pry = require('pryjs');
 
@@ -20,8 +21,13 @@ app.get('/', function (req, res){
 });
 
 app.post('/poll', function (req, res) {
-  console.log('Poll received with ' + JSON.stringify(req.body));
-  res.send('You submited ' + req.body.question + '.');
+  var newPoll = new Poll(req.body);
+  var pollLink = `${req.headers.host}/${newPoll.id}`;
+  res.send(`
+      <p>You submited: ${req.body.question}<p>
+      <p>Poll link: <a href="${pollLink}">${pollLink}</a></p>
+      <p>Results link: <a href="${pollLink}/admin">${pollLink}/admin</a></p>
+      `);
 });
 
 http.listen(process.env.PORT || 3000, function(){
