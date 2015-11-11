@@ -2,19 +2,29 @@
 <html>
   <head>
     <title>Crowdsource</title>
+    <link href="/style.css" rel="stylesheet">
   </head>
   <body>
 
     <h1>Crowdsource</h1>
+    <p>Create a poll, share it with others and see the results in real time.</p>
+    <button id="btn-create-poll">Create a Poll</button>
 
-    <section class="new-message">
-      <div class="username"><input type="text" placeholder="username"></div>
-      <div class="message"><input type="text" placeholder="message"></div>
-      <button class="send-message">Send Message</button>
-    </section>
+    <form id="poll-form" action="/poll" method="post">
 
-    <section class="messages">
-    </section>
+      <label for="question">Question</label><br>
+      <input id="question" type="text" name="question"><br>
+
+      <div id="answers">
+        <label for="answers">Answers</label><br>
+        <input type="text" name="answers"><br>
+        <input type="text" name="answers"><br>
+      </div>
+
+      <a href="" id="btn-add-answer">Add Answer</a>
+      <input type="submit" value="Submit">
+
+    </form>
 
     <script src="/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
