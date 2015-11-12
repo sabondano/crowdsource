@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+
 app.get('/', function (req, res){
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
@@ -45,11 +48,7 @@ app.get('/polls/:id', function (req, res) {
 app.get('/polls/:id/admin', function (req, res) {
   client.hgetall('polls', function (err, obj) {
     var poll = JSON.parse(obj[req.params.id]);
-    res.send(`
-        <p>${poll.question}</p>
-        <p>${poll.answers[0]}</p>
-        <p>${poll.answers[1]}</p>
-        `);
+    res.render('pages/index', {poll: poll});
   });
 });
 
