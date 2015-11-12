@@ -20,14 +20,37 @@ app.get('/', function (req, res){
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-app.post('/poll', function (req, res) {
+app.post('/polls', function (req, res) {
   var newPoll = new Poll(req.body);
-  var pollLink = `${req.headers.host}/${newPoll.id}`;
+  client.hmset('polls', newPoll.id, JSON.stringify(newPoll));
+  var pollLink = `${req.headers.host}/polls/${newPoll.id}`;
   res.send(`
       <p>You submited: ${req.body.question}<p>
-      <p>Poll link: <a href="${pollLink}">${pollLink}</a></p>
-      <p>Results link: <a href="${pollLink}/admin">${pollLink}/admin</a></p>
+      <p>Poll link: <a href="http://${pollLink}">${pollLink}</a></p>
+      <p>Results link: <a href="http://${pollLink}/admin">${pollLink}/admin</a></p>
       `);
+});
+
+app.get('/polls/:id', function (req, res) {
+  client.hgetall('polls', function (err, obj) {
+    var poll = JSON.parse(obj[req.params.id]);
+    res.send(`
+        <p>${poll.question}</p>
+        <p>${poll.answers[0]}</p>
+        <p>${poll.answers[1]}</p>
+        `);
+  });
+});
+
+app.get('/polls/:id/admin', function (req, res) {
+  client.hgetall('polls', function (err, obj) {
+    var poll = JSON.parse(obj[req.params.id]);
+    res.send(`
+        <p>${poll.question}</p>
+        <p>${poll.answers[0]}</p>
+        <p>${poll.answers[1]}</p>
+        `);
+  });
 });
 
 http.listen(process.env.PORT || 3000, function(){
