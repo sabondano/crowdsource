@@ -1,14 +1,11 @@
 (function(){
   'use strict';
 
-  // Initialize the WebSocket connection.
-  var socket = io();
-
-  // Grab some DOM element that we're going to be using.
+  // Grab some DOM elements that we're going to be using.
   var createPollButton = $('#btn-create-poll');
   var pollForm = $('#poll-form');
-  var answers = $('#answers');
-  var addAnswerButton = $('#btn-add-answer');
+  var choices = $('#choices');
+  var addChoiceButton = $('#btn-add-choice');
 
   // Show form to create poll when #btn-create-poll is clicked.
   createPollButton.on('click', function (event) {
@@ -18,8 +15,8 @@
   });
 
   // Add answer field to form when #btn-add-answer is clicked.
-  addAnswerButton.on('click', function (event) {
+  addChoiceButton.on('click', function (event) {
     event.preventDefault();
-    answers.append(`<input type="text" name="answer"><br>`);
+    choices.append(`<input type="text" name="choices"><br>`);
   });
 }());

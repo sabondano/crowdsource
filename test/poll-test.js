@@ -36,23 +36,24 @@ describe('Poll', function () {
     assert.equal("String", poll.adminId.constructor.name);
   });
 
-  it('has answers (empty array upon instantiation)', function () {
+  it('has votes', function () {
     data = { pollData: { question: "To be or not to be?",
                          choices: ["yes", "no"] },
              host: "localhost:3000"
     };
     var poll = new Poll(data);
 
-    assert.deepEqual([], poll.answers);
+    assert.deepEqual({}, poll.votes);
   });
-   it('has a link for the poll and an admin link', function () {
-     data = { pollData: { question: "To be or not to be?",
-                          choices: ["yes", "no"] },
-              host: "localhost:3000"
-     };
-     var poll = new Poll(data);
 
-     assert(poll.link);
-     assert(poll.adminLink);
-   });
+  it('has a link for the poll and an admin link', function () {
+    data = { pollData: { question: "To be or not to be?",
+                         choices: ["yes", "no"] },
+             host: "localhost:3000"
+    };
+    var poll = new Poll(data);
+
+    assert(poll.link);
+    assert(poll.adminLink);
+  });
 });
