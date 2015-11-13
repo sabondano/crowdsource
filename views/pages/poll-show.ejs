@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<header>
+</header>
+<main>
+
+<div id="connection-count"></div>
+<div id="status-message"></div>
+<div id="poll" data-id="<%= poll.id %>">
+  <%= poll.question %>
+
+  <div id="choices">
+    <% poll.choices.forEach(function (choice) { %>
+      <button><%= choice %></button>
+    <% }); %>
+  </div>
+</div>
+
+<div id="tally"></div>
+
+</main>
+
+<footer>
+</footer>
+
+<script src="/jquery.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/client.js"></script>
+</body>
+</html>
