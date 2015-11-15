@@ -41,10 +41,10 @@ app.post('/polls', function (req, res) {
 app.get('/polls/:id', function (req, res) {
   client.hgetall('polls', function (err, obj) {
     if (obj[req.params.id] === undefined) {
-      return res.send(`No poll with id x found.`);
+      return res.send(`No poll with id ${req.params.id} found.`);
     }
     
-    var poll = JSON.parse(obj[req.params.id]);
+    var poll = new Poll(JSON.parse(obj[req.params.id]), 'existingPoll');
     res.render('pages/poll-show', {poll: poll});
   });
 });
