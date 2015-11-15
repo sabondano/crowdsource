@@ -32,7 +32,7 @@ app.post('/polls', function (req, res) {
   var newPoll = new Poll({pollData: req.body.poll, host: req.headers.host});
   client.hmset('polls', newPoll.id, JSON.stringify(newPoll));
   res.send(`
-           <p>You submited: ${req.body.question}<p>
+           <p>You submited: ${req.body.poll.question}<p>
            <p>Poll link: <a href="${newPoll.link}">${newPoll.link}</a></p>
            <p>Results link: <a href="${newPoll.adminLink}">${newPoll.adminLink}</a></p>
            `);
@@ -45,14 +45,21 @@ app.get('/polls/:id', function (req, res) {
     }
     
     var poll = new Poll(JSON.parse(obj[req.params.id]), 'existingPoll');
-    res.render('pages/poll-show', {poll: poll});
+    res.render('pages/poll-show', {poll: poll, admin: false});
   });
 });
 
 app.get('/polls/:id/admin', function (req, res) {
   client.hgetall('polls', function (err, obj) {
-    var poll = JSON.parse(obj[req.params.id]);
-    res.render('pages/index', {poll: poll});
+    for (poll in obj) {
+      var parsedPoll = JSON.parse(obj[poll]);
+      if (parsedPoll.adminId === req.params.id) {
+        var instantiatedPoll = new Poll(parsedPoll, 'existingPoll');
+        res.render('pages/poll-show', {poll: instantiatedPoll, admin: true});
+      } else {
+        return res.send(`No poll with id ${req.params.id} found.`);
+      }
+    }
   });
 });
 
@@ -69,7 +76,7 @@ io.on('connection', function (socket) {
         var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
         poll.votes[socket.id] =  message.vote;
         client.hmset('polls', poll.id, JSON.stringify(poll));
-        io.sockets.emit('voteCount', poll.countVotes());
+        // io.sockets.emit('voteCount', poll.countVotes());
         socket.emit('statusMessage', `We received your vote for ${message.vote}!`);
       });
     }

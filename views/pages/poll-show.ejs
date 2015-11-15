@@ -19,9 +19,11 @@
   </div>
 </div>
 
-<div id="tally">
-  <%= JSON.stringify(poll.countVotes()) %>
-</div>
+<% if (admin) { %>
+  <div id="tally">
+    <%= JSON.stringify(poll.countVotes()) %>
+  </div>
+<% } %>
 
 </main>
 
