@@ -13,12 +13,12 @@
     <form id="poll-form" action="/polls" method="post">
 
       <label for="question">Question</label><br>
-      <input id="question" type="text" name="question"><br>
+      <input id="question" type="text" name="poll[question]"><br>
 
       <div id="choices">
         <label for="choices">Answers</label><br>
-        <input type="text" name="choices"><br>
-        <input type="text" name="choices"><br>
+        <input type="text" name="poll[choices]"><br>
+        <input type="text" name="poll[choices]"><br>
       </div>
 
       <a href="" id="btn-add-choice">Add Answer</a>
