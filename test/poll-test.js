@@ -1,6 +1,5 @@
 const assert = require('assert');
 const Poll = require('../lib/poll');
-const pry = require('pryjs');
 
 describe('Poll', function () {
   it('accepts a js object with poll data and host', function () {

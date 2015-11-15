@@ -11,8 +11,6 @@ const _ = require('lodash');
 
 const Poll = require('./lib/poll');
 
-const pry = require('pryjs');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
