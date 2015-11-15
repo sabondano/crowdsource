@@ -9,6 +9,8 @@ const client = redis.createClient();
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 
+const pry = require('pryjs');
+
 const Poll = require('./lib/poll');
 
 app.use(bodyParser.json());
@@ -18,12 +20,16 @@ app.use(express.static('public'));
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.locals.title = 'Crowdsource'
+
 app.get('/', function (req, res){
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 app.post('/polls', function (req, res) {
-  var newPoll = new Poll({pollData: req.body, host: req.headers.host});
+  if (!req.body.poll) { return res.sendStatus(400); }
+
+  var newPoll = new Poll({pollData: req.body.poll, host: req.headers.host});
   client.hmset('polls', newPoll.id, JSON.stringify(newPoll));
   res.send(`
            <p>You submited: ${req.body.question}<p>
@@ -34,6 +40,10 @@ app.post('/polls', function (req, res) {
 
 app.get('/polls/:id', function (req, res) {
   client.hgetall('polls', function (err, obj) {
+    if (obj[req.params.id] === undefined) {
+      return res.send(`No poll with id x found.`);
+    }
+    
     var poll = JSON.parse(obj[req.params.id]);
     res.render('pages/poll-show', {poll: poll});
   });
@@ -71,7 +81,10 @@ io.on('connection', function (socket) {
   });
 });
 
+if (!module.parent) {
+  http.listen(process.env.PORT || 3000, function(){
+    console.log('Your server is up and running on Port 3000. Good job!');
+  });
+}
 
-http.listen(process.env.PORT || 3000, function(){
-  console.log('Your server is up and running on Port 3000. Good job!');
-});
+module.exports = app;
