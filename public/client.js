@@ -25,5 +25,5 @@ var tally = document.getElementById('tally');
 
 socket.on('voteCount', function (votes) {
   console.log(votes);
-  tally.innerText = JSON.stringify(votes);
+  if (tally) { tally.innerText = JSON.stringify(votes); }
 });

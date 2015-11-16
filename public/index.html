@@ -12,7 +12,7 @@
 
     <form id="poll-form" action="/polls" method="post">
 
-      <label for="question">Question</label><br>
+      <label for="poll[question]">Question</label><br>
       <input id="question" type="text" name="poll[question]"><br>
 
       <div id="choices">
@@ -20,6 +20,13 @@
         <input type="text" name="poll[choices]"><br>
         <input type="text" name="poll[choices]"><br>
       </div>
+
+      <label for="shareable">
+        <input type="checkbox" id="shareable" value="true" name="poll[shareable]">
+        Share results with voters.
+      </label>
+      
+      <br>
 
       <a href="" id="btn-add-choice">Add Answer</a>
       <input type="submit" value="Submit">

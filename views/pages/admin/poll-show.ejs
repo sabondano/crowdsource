@@ -19,11 +19,9 @@
   </div>
 </div>
 
-<% if (poll.shareable) { %>
-  <div id="tally">
-    <%= JSON.stringify(poll.countVotes()) %>
-  </div>
-<% } %>
+<div id="tally">
+  <%= JSON.stringify(poll.countVotes()) %>
+</div>
 
 </main>
 

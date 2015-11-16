@@ -19,4 +19,5 @@
     event.preventDefault();
     choices.append(`<input type="text" name="poll[choices]"><br>`);
   });
+
 }());
