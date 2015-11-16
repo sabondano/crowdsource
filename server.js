@@ -8,6 +8,7 @@ const client = redis.createClient();
 
 const bodyParser = require('body-parser');
 const _ = require('lodash');
+const moment = require('moment');
 
 const pry = require('pryjs');
 
@@ -45,6 +46,10 @@ app.get('/polls/:id', function (req, res) {
     }
     
     var poll = new Poll(JSON.parse(obj[req.params.id]), 'existingPoll');
+    if (moment() >= poll.endTime) {
+      poll.status = "off";
+      client.hmset('polls', poll.id, JSON.stringify(poll));
+    }
     res.render('pages/poll-show', {poll: poll});
   });
 });
@@ -55,6 +60,10 @@ app.get('/polls/:id/admin', function (req, res) {
       var parsedPoll = JSON.parse(obj[poll]);
       if (parsedPoll.adminId === req.params.id) {
         var instantiatedPoll = new Poll(parsedPoll, 'existingPoll');
+        if (moment() >= instantiatedPoll.endTime) {
+          poll.status = "off";
+          client.hmset('polls', poll.id, JSON.stringify(poll));
+        }
         return res.render('pages/admin/poll-show', {poll: instantiatedPoll});
       } 
     }
@@ -73,6 +82,10 @@ io.on('connection', function (socket) {
     if (channel === 'voteCast') {
       client.hgetall('polls', function (err, obj) {
         var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
+        if (moment() >= poll.endTime) {
+          poll.status = "off";
+          client.hmset('polls', poll.id, JSON.stringify(poll));
+        }
         if (poll.status === "on") {
           poll.votes[socket.id] =  message.vote;
           client.hmset('polls', poll.id, JSON.stringify(poll));
