@@ -15,11 +15,22 @@ socket.on('statusMessage', function (message) {
 var pollId = document.getElementById('poll').dataset.id;
 var buttons = document.querySelectorAll('#choices button');
 
+var voteCastListener = function () {
+  socket.send('voteCast', {pollId: pollId, vote: this.innerText});
+};
+
 for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', function () {
-    socket.send('voteCast', {pollId: pollId, vote: this.innerText});
-  });
+  buttons[i].addEventListener('click', voteCastListener);
 }
+
+var btnEndPoll = document.getElementById('btn-end-poll');
+
+btnEndPoll.addEventListener('click', function () {
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].removeEventListener('click', voteCastListener);
+  }    
+  socket.send('turnPollOff', {pollId: pollId});
+});
 
 var tally = document.getElementById('tally');
 
