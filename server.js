@@ -46,7 +46,7 @@ app.get('/polls/:id', function (req, res) {
     }
     
     var poll = new Poll(JSON.parse(obj[req.params.id]), 'existingPoll');
-    if (moment() >= poll.endTime) {
+    if (moment() > poll.endTime) {
       poll.status = "off";
       client.hmset('polls', poll.id, JSON.stringify(poll));
     }
@@ -79,6 +79,12 @@ io.on('connection', function (socket) {
   socket.emit('statusMessage', 'You have connected.');
 
   socket.on('message', function (channel, message) {
+    if (channel === 'joinRoom') {
+      socket.join(message);
+    }
+  });
+
+  socket.on('message', function (channel, message) {
     if (channel === 'voteCast') {
       client.hgetall('polls', function (err, obj) {
         var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
@@ -89,7 +95,7 @@ io.on('connection', function (socket) {
         if (poll.status === "on") {
           poll.votes[socket.id] =  message.vote;
           client.hmset('polls', poll.id, JSON.stringify(poll));
-          io.sockets.emit('voteCount', poll.countVotes());
+          io.to(poll.id).emit('voteCount', poll.countVotes());
           socket.emit('statusMessage', `We received your vote for ${message.vote}!`);
         }
         if (poll.status === "off") {
