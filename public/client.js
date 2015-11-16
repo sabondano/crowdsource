@@ -25,16 +25,18 @@ for (var i = 0; i < buttons.length; i++) {
 
 var btnEndPoll = document.getElementById('btn-end-poll');
 
-btnEndPoll.addEventListener('click', function () {
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].removeEventListener('click', voteCastListener);
-  }    
-  socket.send('turnPollOff', {pollId: pollId});
-});
+if (btnEndPoll) {
+  btnEndPoll.addEventListener('click', function () {
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].removeEventListener('click', voteCastListener);
+    }    
+    socket.send('turnPollOff', {pollId: pollId});
+  });
+}
 
 var tally = document.getElementById('tally');
 
 socket.on('voteCount', function (votes) {
   console.log(votes);
-  if (tally) { tally.innerText = JSON.stringify(votes); }
+  if (!!tally) { tally.innerText = JSON.stringify(votes); }
 });
