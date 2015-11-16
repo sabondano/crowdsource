@@ -73,10 +73,24 @@ io.on('connection', function (socket) {
     if (channel === 'voteCast') {
       client.hgetall('polls', function (err, obj) {
         var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
-        poll.votes[socket.id] =  message.vote;
+        if (poll.status === "on") {
+          poll.votes[socket.id] =  message.vote;
+          client.hmset('polls', poll.id, JSON.stringify(poll));
+          io.sockets.emit('voteCount', poll.countVotes());
+          socket.emit('statusMessage', `We received your vote for ${message.vote}!`);
+        }
+        if (poll.status === "off") {
+          socket.emit('statusMessage', `Sorry but this poll has been turned off.`);
+        }
+      });
+    }
+
+    if (channel === 'turnPollOff') {
+      client.hgetall('polls', function (err, obj) {
+        var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
+        poll.status = "off";
         client.hmset('polls', poll.id, JSON.stringify(poll));
-        io.sockets.emit('voteCount', poll.countVotes());
-        socket.emit('statusMessage', `We received your vote for ${message.vote}!`);
+        socket.emit('statusMessage', `The poll has been turned off.`);
       });
     }
   });
