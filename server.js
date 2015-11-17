@@ -10,8 +10,6 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const moment = require('moment');
 
-const pry = require('pryjs');
-
 const Poll = require('./lib/poll');
 
 app.use(bodyParser.json());

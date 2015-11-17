@@ -7,8 +7,6 @@ const client = redis.createClient();
 const fixtures = require('./fixtures');
 const Poll = require('../lib/poll');
 
-const pry = require('pryjs');
-
 describe('Server', () => {
 
   before((done) => {
