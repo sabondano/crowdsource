@@ -87,6 +87,18 @@ io.on('connection', function (socket) {
   });
 
   socket.on('message', function (channel, message) {
+    if (channel === 'getVotes') {
+      client.hgetall('polls', function (err, obj) {
+      var poll = new Poll(JSON.parse(obj[message]), 'existingPoll');
+      var voteCount = poll.countVotes();
+      var votes = poll.votes;
+      var choices = poll.choices;
+      socket.emit('setVotes', { votes: votes, voteCount: voteCount, choices: choices });
+      });
+    }
+  });
+
+  socket.on('message', function (channel, message) {
     if (channel === 'voteCast') {
       client.hgetall('polls', function (err, obj) {
         var poll = new Poll(JSON.parse(obj[message.pollId]), 'existingPoll');
@@ -97,7 +109,8 @@ io.on('connection', function (socket) {
         if (poll.status === "on") {
           poll.votes[socket.id] =  message.vote;
           client.hmset('polls', poll.id, JSON.stringify(poll));
-          io.to(poll.id).emit('voteCount', poll.countVotes());
+          io.to(poll.id).emit('voteCount',
+                              { votes: poll.countVotes(), choices: poll.choices });
           socket.emit('statusMessage', `We received your vote for ${message.vote}!`);
         }
         if (poll.status === "off") {

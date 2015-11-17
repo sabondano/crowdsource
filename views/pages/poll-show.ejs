@@ -48,21 +48,12 @@
                   </thead>
                   <tbody>
 
-                    <% if (Object.keys(poll.votes).length > 0) { %> 
-                      <% Object.keys(poll.countVotes()).forEach(function (vote) { %>
-                        <tr>
-                          <td><%= vote %></td>
-                          <td id="<%= vote + 'Count'%>"><%= poll.countVotes()[vote] %></td>
-                        </tr>
-                      <% }); %>
-                    <% } else { %>
-                      <% poll.choices.forEach(function (choice) { %>
-                        <tr>
-                          <td><%= choice %></td>
-                          <td id="<%= choice + 'Count'%>">0</td>
-                        </tr>
-                      <% }); %>
-                    <% } %>
+                    <% poll.choices.forEach(function (choice) { %>
+                      <tr>
+                        <td><%= choice %></td>
+                        <td id="<%= choice + 'Count'%>">0</td>
+                      </tr>
+                    <% }); %>
 
                   </tbody>
                 </table>
