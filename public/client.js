@@ -37,5 +37,9 @@ if (btnEndPoll) {
 
 socket.on('voteCount', function (votes) {
   console.log(votes);
-  if (!!tally) { tally.innerText = JSON.stringify(votes); }
+  if (!!tally) { 
+    Object.keys(votes).forEach(function (vote) {
+      $('#' + vote + 'Count').text(votes[vote]);
+    });
+  }
 });

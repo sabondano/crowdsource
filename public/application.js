@@ -17,7 +17,7 @@
   // Add answer field to form when #btn-add-answer is clicked.
   addChoiceButton.on('click', function (event) {
     event.preventDefault();
-    choices.append(`<input type="text" name="poll[choices]"><br>`);
+    choices.append(`<input type="text" class="form-control" name="poll[choices]"><br>`);
   });
 
 }());

@@ -1,38 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-</head>
-<body>
-<header>
-</header>
-<main>
+  <head>
+    <title>Crowdsource</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+  </head>
+  <body id="background">
+    <div class="container container-poll">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <header>
+            <h1 id="headline">Crowdsource</h1>
+            <p class="lead subheadline">
+            Click on one of the buttons to vote!
+            </p>
+          </header>
+          <main>
 
-<div id="connection-count"></div>
-<div id="status-message"></div>
-<div id="poll" data-id="<%= poll.id %>">
-  <%= poll.question %>
+          <div id="poll" data-id="<%= poll.id %>">
+            <h3><%= poll.question %></h3>
 
-  <div id="choices">
-    <% poll.choices.forEach(function (choice) { %>
-      <button><%= choice %></button>
-    <% }); %>
-  </div>
-</div>
+            <div id="choices">
+              <% poll.choices.forEach(function (choice) { %>
+                <button class="btn btn-default btn-create-poll">
+                  <strong><%= choice %></strong>
+                </button><br>
+              <% }); %>
+            </div>
+          </div>
 
-<div id="tally">
-  <%= JSON.stringify(poll.countVotes()) %>
-</div>
+          <small>
+            <div id="connection-count" class="text-muted"></div>
+            <div id="status-message" class="text-muted"></div>
+          </small>
 
-<button id="btn-end-poll">Turn Poll Off</button>
+          <% if (poll.shareable) { %>
+            <h3>Results</h3>
+            <div id="tally">
 
-</main>
+              <div class="col-sm-6 col-sm-offset-3">
+                <table class="table table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>Vote</th>
+                      <th># of votes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-<footer>
-</footer>
+                    <% if (Object.keys(poll.votes).length > 0) { %> 
+                      <% Object.keys(poll.countVotes()).forEach(function (vote) { %>
+                        <tr>
+                          <td><%= vote %></td>
+                          <td id="<%= vote + 'Count'%>"><%= poll.countVotes()[vote] %></td>
+                        </tr>
+                      <% }); %>
+                    <% } else { %>
+                      <% poll.choices.forEach(function (choice) { %>
+                        <tr>
+                          <td><%= choice %></td>
+                          <td id="<%= choice + 'Count'%>">0</td>
+                        </tr>
+                      <% }); %>
+                    <% } %>
 
-<script src="/jquery.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/client.js"></script>
+                  </tbody>
+                </table>
+              </div>
 
-</body>
+            </div>
+          <% } %>
+
+          <button id="btn-end-poll" class="btn btn-default">Turn Poll Off</button>
+          </main>
+
+          <footer>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script src="/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+  </body>
 </html>

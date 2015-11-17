@@ -2,41 +2,58 @@
 <html>
   <head>
     <title>Crowdsource</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="/style.css" rel="stylesheet">
   </head>
-  <body>
+  <body id="background">
+    <div id="container-new-poll-form" class="container">
 
-    <h1>Crowdsource</h1>
-    <p>Create a poll, share it with others and see the results in real time.</p>
-    <button id="btn-create-poll">Create a Poll</button>
+      <h1 id="headline">Crowdsource</h1>
+      <p class="lead subheadline">Create a poll, share it with others and see the results in real time.</p>
+      <button id="btn-create-poll" class="btn btn-default btn-lg btn-create-poll">Create a Poll</button>
 
-    <form id="poll-form" action="/polls" method="post">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <form id="poll-form" action="/polls" method="post">
 
-      <label for="poll[question]">Question</label><br>
-      <input id="question" type="text" name="poll[question]"><br>
+            <div class="form-group required">
+              <label for="poll[question]" class="control-label">Question</label><br>
+              <input id="question" class="form-control" type="text" name="poll[question]"><br>
+            </div>
 
-      <div id="choices">
-        <label for="choices">Answers</label><br>
-        <input type="text" name="poll[choices]"><br>
-        <input type="text" name="poll[choices]"><br>
+
+            <div class="form-group required">
+              <div id="choices">
+                <label for="choices" class="control-label">Answers</label><br>
+                <input type="text" class="form-control" name="poll[choices]"><br>
+                <input type="text" class="form-control" name="poll[choices]"><br>
+              </div>
+              <a href="" id="btn-add-choice">Add Answer</a><br>
+            </div>
+
+            <div class="form-group">
+              <label for="poll[endTime]" class="end-time-label">End Time
+                </label><br>
+                <small>(YYYY-MM-DD HH:mm)</small>
+              <input type="text" class="form-control" name="poll[endTime]"><br>
+            </div>
+
+            <label for="shareable" class="shareable-label">
+              <input type="checkbox" id="shareable" value="true" name="poll[shareable]">
+              Share results with voters.
+            </label>
+
+            <br>
+
+            <input type="submit" value="Submit" class="btn btn-default btn-lg btn-create-poll">
+
+          </form>
+        </div>
       </div>
-
-      <label for="poll[endTime]">End Time (YYYY-MM-DD HH:mm)</label><br>
-      <input type="text" name="poll[endTime]"><br>
-
-      <label for="shareable">
-        <input type="checkbox" id="shareable" value="true" name="poll[shareable]">
-        Share results with voters.
-      </label>
-      
-      <br>
-
-      <a href="" id="btn-add-choice">Add Answer</a>
-      <input type="submit" value="Submit">
-
-    </form>
+    </div>
 
     <script src="/jquery.js"></script>
+    <script src"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/application.js"></script>
 

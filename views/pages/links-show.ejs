@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Crowdsource</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+  </head>
+  <body id="background">
+    <div class="container container-links">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <header>
+            <h1 id="headline">Crowdsource</h1>
+            <p class="lead subheadline">
+            Thank you for creating a poll! <br>Find the shareable link and admin link to your poll below.
+            </p>
+          </header>
+          <main>
+
+          <p>Poll: <strong><%= poll.question %></strong><p>
+          <p>Poll link: <a href="<%= poll.link %>"><%= poll.link %></a></p>
+          <p>Admin link: <a href="<%= poll.adminLink %>"><%= poll.adminLink %></a></p>
+
+          </main>
+
+          <footer>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script src="/jquery.js"></script>
+    <script src"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+
+  </body>
+</html>

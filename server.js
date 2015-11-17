@@ -32,11 +32,7 @@ app.post('/polls', function (req, res) {
 
   var newPoll = new Poll({pollData: req.body.poll, host: req.headers.host});
   client.hmset('polls', newPoll.id, JSON.stringify(newPoll));
-  res.send(`
-           <p>You submited: ${req.body.poll.question}<p>
-           <p>Poll link: <a href="${newPoll.link}">${newPoll.link}</a></p>
-           <p>Results link: <a href="${newPoll.adminLink}">${newPoll.adminLink}</a></p>
-           `);
+  res.render('pages/links-show', {poll: newPoll});
 });
 
 app.get('/polls/:id', function (req, res) {
