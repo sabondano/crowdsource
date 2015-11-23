@@ -26,7 +26,7 @@ socket.on('setVotes', function (message) {
   if (Object.keys(votes).length > 0) {
 
     Object.keys(voteCount).forEach(function (vote) {
-      var voteTd = $('#' + vote + 'Count');
+      var voteTd = $('#' + vote.split(" ").join("") + 'Count');
       voteTd.text(voteCount[vote]);
     });
   }   
@@ -58,12 +58,12 @@ socket.on('voteCount', function (message) {
   if (!!tally) { 
 
     choices.forEach( function (choice) {
-      var choiceTd = $('#' + choice + 'Count');
+      var choiceTd = $('#' + choice.split(" ").join("") + 'Count');
       choiceTd.text('0');
     });
 
     Object.keys(votes).forEach(function (vote) {
-      $('#' + vote + 'Count').text(votes[vote]);
+      $('#' + vote.split(" ").join("") + 'Count').text(votes[vote]);
     });
 
   }

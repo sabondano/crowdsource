@@ -51,7 +51,7 @@
                     <% poll.choices.forEach(function (choice) { %>
                       <tr>
                         <td><%= choice %></td>
-                        <td id="<%= choice + 'Count'%>">0</td>
+                        <td id="<%= choice.split(" ").join("") + 'Count'%>">0</td>
                       </tr>
                     <% }); %>
 
